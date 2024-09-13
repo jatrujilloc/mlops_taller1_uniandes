@@ -1,3 +1,4 @@
+#%%
 import dash
 from dash import dcc
 from dash import html
@@ -18,15 +19,22 @@ app.title = "Dashboard energia"
 server = app.server
 app.config.suppress_callback_exceptions = True
 
+#%%
 
 # Load data from csv
 def load_data():
     # To do: Completar la función 
-    
+    df = pd.read_csv("datos_energia.csv")
+    #Convertir columna time a formato datetime
+    df['time'] = pd.to_datetime(df['time'])
+    #Convertir columna time como indice
+    df.set_index('time', inplace=True)
+    return df
 
 # Cargar datos
 data = load_data()
 
+#%%
 # Graficar serie
 def plot_series(data, initial_date, proy):
     data_plot = data.loc[initial_date:]
@@ -241,3 +249,5 @@ def update_output_div(date, hour, proy):
 # Run the server
 if __name__ == "__main__":
     app.run_server(debug=True)
+
+# %%
